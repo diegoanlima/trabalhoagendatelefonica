@@ -43,6 +43,7 @@
             this.AdicionarContatoButton = new System.Windows.Forms.Button();
             this.PesquisarTextBox = new System.Windows.Forms.TextBox();
             this.PesquisarButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // nome
@@ -73,6 +74,7 @@
             this.EditarContatoButton.TabIndex = 3;
             this.EditarContatoButton.Text = "Editar";
             this.EditarContatoButton.UseVisualStyleBackColor = true;
+            this.EditarContatoButton.Click += new System.EventHandler(this.EditarContatoButton_Click);
             // 
             // ExcluirContatoButton
             // 
@@ -82,6 +84,7 @@
             this.ExcluirContatoButton.TabIndex = 4;
             this.ExcluirContatoButton.Text = "Excluir";
             this.ExcluirContatoButton.UseVisualStyleBackColor = true;
+            this.ExcluirContatoButton.Click += new System.EventHandler(this.ExcluirContatoButton_Click_1);
             // 
             // NomeTextBox
             // 
@@ -139,7 +142,7 @@
             // 
             // monthCalendar1
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(522, 30);
+            this.monthCalendar1.Location = new System.Drawing.Point(480, 18);
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 11;
             // 
@@ -157,12 +160,13 @@
             // 
             // AdicionarContatoButton
             // 
-            this.AdicionarContatoButton.Location = new System.Drawing.Point(144, 135);
+            this.AdicionarContatoButton.Location = new System.Drawing.Point(161, 135);
             this.AdicionarContatoButton.Name = "AdicionarContatoButton";
             this.AdicionarContatoButton.Size = new System.Drawing.Size(75, 23);
             this.AdicionarContatoButton.TabIndex = 14;
             this.AdicionarContatoButton.Text = "Salvar";
             this.AdicionarContatoButton.UseVisualStyleBackColor = true;
+            this.AdicionarContatoButton.Click += new System.EventHandler(this.AdicionarContatoButton_Click_1);
             // 
             // PesquisarTextBox
             // 
@@ -180,12 +184,23 @@
             this.PesquisarButton.Text = "Buscar";
             this.PesquisarButton.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(80, 135);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 17;
+            this.button1.Text = "Limpar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(808, 456);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.PesquisarButton);
             this.Controls.Add(this.PesquisarTextBox);
             this.Controls.Add(this.AdicionarContatoButton);
@@ -226,6 +241,7 @@
         private System.Windows.Forms.Button AdicionarContatoButton;
         private System.Windows.Forms.TextBox PesquisarTextBox;
         private System.Windows.Forms.Button PesquisarButton;
+        private System.Windows.Forms.Button button1;
     }
 }
 

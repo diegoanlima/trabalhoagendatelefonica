@@ -19,56 +19,7 @@ namespace AgendaTelefonica
             this.Load += MainForm_Load;
         }
 
-        private void AdicionarContatoButton_Click(object sender, EventArgs e)
-        {
-            // Obter dados do formulário
-            string nome = NomeTextBox.Text.Trim();
-            string telefone = TelefoneTextBox.Text.Trim();
-            string email = EmailTextBox.Text.Trim();
-            string tipo = TipoContatoComboBox.SelectedItem?.ToString();
-
-            // Verificar se todos os campos foram preenchidos
-            if (!string.IsNullOrEmpty(nome) && !string.IsNullOrEmpty(telefone) && !string.IsNullOrEmpty(tipo))
-            {
-                // Criar um novo objeto Contato
-                Contato novoContato = new Contato(nome, telefone, email, tipo);
-
-                // Adicionar o novo contato à lista
-                contatos.Add(novoContato);
-
-                // Atualizar o ListBox
-                AtualizarListBox();
-
-                // Salvar contatos no armazenamento
-                SalvarContatosNoArmazenamento();
-
-                // Limpar os campos do formulário
-                LimparCampos();
-            }
-            else
-            {
-                MessageBox.Show("Por favor, preencha todos os campos.");
-            }
-        }
-
-        private void ExcluirContatoButton_Click(object sender, EventArgs e)
-        {
-            if (ContatosListBox.SelectedItem != null)
-            {
-                int index = ContatosListBox.SelectedIndex;
-                contatos.RemoveAt(index);
-
-                // Salvar contatos no armazenamento
-                SalvarContatosNoArmazenamento();
-
-                AtualizarListBox();
-            }
-            else
-            {
-                MessageBox.Show("Selecione um contato para excluir.");
-            }
-        }
-
+       
         private void PesquisarButton_Click(object sender, EventArgs e)
         {
             string termoPesquisa = PesquisarTextBox.Text.Trim();
@@ -181,6 +132,78 @@ namespace AgendaTelefonica
             }
 
             return contatosCarregados;
+        }
+
+        private void AdicionarContatoButton_Click_1(object sender, EventArgs e)
+        {
+            // Obter dados do formulário
+            string nome = NomeTextBox.Text.Trim();
+            string telefone = TelefoneTextBox.Text.Trim();
+            string email = EmailTextBox.Text.Trim();
+            string tipo = TipoContatoComboBox.SelectedItem?.ToString();
+
+            // Verificar se todos os campos foram preenchidos
+            if (!string.IsNullOrEmpty(nome) && !string.IsNullOrEmpty(telefone) && !string.IsNullOrEmpty(tipo))
+            {
+                // Criar um novo objeto Contato
+                Contato novoContato = new Contato(nome, telefone, email, tipo);
+
+                // Adicionar o novo contato à lista
+                contatos.Add(novoContato);
+
+                // Atualizar o ListBox
+                AtualizarListBox();
+
+                // Salvar contatos no armazenamento
+                SalvarContatosNoArmazenamento();
+
+                // Limpar os campos do formulário
+                LimparCampos();
+            }
+            else
+            {
+                MessageBox.Show("Por favor, preencha todos os campos.");
+            }
+        }
+
+     
+
+        private void ExcluirContatoButton_Click_1(object sender, EventArgs e)
+        {
+            
+                if (ContatosListBox.SelectedItem != null)
+                {
+                    // Obtém o contato selecionado
+                    Contato contatoSelecionado = (Contato)ContatosListBox.SelectedItem;
+
+                    // Remove o contato da lista
+                    contatos.Remove(contatoSelecionado);
+
+                    // Atualiza o ListBox
+                    AtualizarListBox();
+
+                    // Salva contatos no armazenamento
+                    SalvarContatosNoArmazenamento();
+
+                    // Limpa os campos do formulário
+                    LimparCampos();
+                }
+                else
+                {
+                    MessageBox.Show("Por favor, selecione um contato para excluir.");
+                }
+            }
+
+        
+
+        private void EditarContatoButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 
