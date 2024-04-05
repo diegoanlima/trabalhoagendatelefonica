@@ -198,8 +198,47 @@ namespace AgendaTelefonica
 
         private void EditarContatoButton_Click(object sender, EventArgs e)
         {
+                if (ContatosListBox.SelectedItem != null)
+                {
+                    // Obtém o contato selecionado
+                    Contato contatoSelecionado = (Contato)ContatosListBox.SelectedItem;
 
-        }
+                    // Obtém os novos valores dos campos do formulário
+                    string novoNome = NomeTextBox.Text.Trim();
+                    string novoTelefone = TelefoneTextBox.Text.Trim();
+                    string novoEmail = EmailTextBox.Text.Trim();
+                    string novoTipo = TipoContatoComboBox.SelectedItem?.ToString();
+
+                    // Verifica se todos os campos estão preenchidos
+                    if (!string.IsNullOrEmpty(novoNome) && !string.IsNullOrEmpty(novoTelefone) && !string.IsNullOrEmpty(novoTipo))
+                    {
+                        // Atualiza os valores do contato selecionado
+                        contatoSelecionado.Nome = novoNome;
+                        contatoSelecionado.Telefone = novoTelefone;
+                        contatoSelecionado.Email = novoEmail;
+                        contatoSelecionado.Tipo = novoTipo;
+
+                        // Atualiza o ListBox
+                        AtualizarListBox();
+
+                        // Salva contatos no armazenamento
+                        SalvarContatosNoArmazenamento();
+
+                        // Limpa os campos do formulário
+                        LimparCampos();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Por favor, preencha todos os campos.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Por favor, selecione um contato para editar.");
+                }
+            }
+
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
