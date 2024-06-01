@@ -30,7 +30,7 @@
         {
             this.nome = new System.Windows.Forms.Label();
             this.ContatosListBox = new System.Windows.Forms.ListBox();
-            this.EditarContatoButton = new System.Windows.Forms.Button();
+            this.LimparBuscaButton = new System.Windows.Forms.Button();
             this.ExcluirContatoButton = new System.Windows.Forms.Button();
             this.NomeTextBox = new System.Windows.Forms.TextBox();
             this.TelefoneTextBox = new System.Windows.Forms.TextBox();
@@ -66,21 +66,21 @@
             this.ContatosListBox.TabIndex = 1;
             this.ContatosListBox.SelectedIndexChanged += new System.EventHandler(this.ContatosListBox_SelectedIndexChanged);
             // 
-            // EditarContatoButton
+            // LimparBuscaButton
             // 
-            this.EditarContatoButton.Location = new System.Drawing.Point(144, 203);
-            this.EditarContatoButton.Name = "EditarContatoButton";
-            this.EditarContatoButton.Size = new System.Drawing.Size(106, 31);
-            this.EditarContatoButton.TabIndex = 3;
-            this.EditarContatoButton.Text = "Editar";
-            this.EditarContatoButton.UseVisualStyleBackColor = true;
-            this.EditarContatoButton.Click += new System.EventHandler(this.EditarContatoButton_Click);
+            this.LimparBuscaButton.Location = new System.Drawing.Point(368, 209);
+            this.LimparBuscaButton.Name = "LimparBuscaButton";
+            this.LimparBuscaButton.Size = new System.Drawing.Size(106, 25);
+            this.LimparBuscaButton.TabIndex = 3;
+            this.LimparBuscaButton.Text = "Limpar Busca";
+            this.LimparBuscaButton.UseVisualStyleBackColor = true;
+            this.LimparBuscaButton.Click += new System.EventHandler(this.LimparBuscaButton_Click);
             // 
             // ExcluirContatoButton
             // 
-            this.ExcluirContatoButton.Location = new System.Drawing.Point(256, 203);
+            this.ExcluirContatoButton.Location = new System.Drawing.Point(242, 135);
             this.ExcluirContatoButton.Name = "ExcluirContatoButton";
-            this.ExcluirContatoButton.Size = new System.Drawing.Size(106, 31);
+            this.ExcluirContatoButton.Size = new System.Drawing.Size(68, 23);
             this.ExcluirContatoButton.TabIndex = 4;
             this.ExcluirContatoButton.Text = "Excluir";
             this.ExcluirContatoButton.UseVisualStyleBackColor = true;
@@ -183,6 +183,7 @@
             this.PesquisarButton.TabIndex = 16;
             this.PesquisarButton.Text = "Buscar";
             this.PesquisarButton.UseVisualStyleBackColor = true;
+            this.PesquisarButton.Click += new System.EventHandler(this.PesquisarButton_Click_1);
             // 
             // button1
             // 
@@ -213,7 +214,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.NomeTextBox);
             this.Controls.Add(this.ExcluirContatoButton);
-            this.Controls.Add(this.EditarContatoButton);
+            this.Controls.Add(this.LimparBuscaButton);
             this.Controls.Add(this.ContatosListBox);
             this.Controls.Add(this.nome);
             this.Name = "MainForm";
@@ -228,7 +229,7 @@
 
         private System.Windows.Forms.Label nome;
         private System.Windows.Forms.ListBox ContatosListBox;
-        private System.Windows.Forms.Button EditarContatoButton;
+        private System.Windows.Forms.Button LimparBuscaButton;
         private System.Windows.Forms.Button ExcluirContatoButton;
         private System.Windows.Forms.TextBox NomeTextBox;
         private System.Windows.Forms.TextBox TelefoneTextBox;

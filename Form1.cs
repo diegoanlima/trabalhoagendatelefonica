@@ -1,14 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace AgendaTelefonica
 {
     public partial class MainForm : Form
     {
         private List<Contato> contatos;
+        private bool isEdit = false;
+        Contato aux = new Contato();
 
         public MainForm()
         {
@@ -19,7 +24,7 @@ namespace AgendaTelefonica
             this.Load += MainForm_Load;
         }
 
-       
+
         private void PesquisarButton_Click(object sender, EventArgs e)
         {
             string termoPesquisa = PesquisarTextBox.Text.Trim();
@@ -45,6 +50,7 @@ namespace AgendaTelefonica
         {
             if (ContatosListBox.SelectedItem != null)
             {
+                isEdit = true;
                 // Obter o contato selecionado
                 Contato contatoSelecionado = (Contato)ContatosListBox.SelectedItem;
 
@@ -53,6 +59,7 @@ namespace AgendaTelefonica
                 TelefoneTextBox.Text = contatoSelecionado.Telefone;
                 EmailTextBox.Text = contatoSelecionado.Email;
                 TipoContatoComboBox.SelectedItem = contatoSelecionado.Tipo;
+                aux = contatoSelecionado;
             }
             else
             {
@@ -86,6 +93,7 @@ namespace AgendaTelefonica
             TelefoneTextBox.Clear();
             EmailTextBox.Clear();
             TipoContatoComboBox.SelectedIndex = -1;
+            aux = null;
         }
 
         // Método para carregar contatos quando o formulário é carregado
@@ -102,10 +110,13 @@ namespace AgendaTelefonica
         private void SalvarContatosNoArmazenamento()
         {
             // Converte cada contato para uma string formatada para salvar no arquivo
-            List<string> linhas = contatos.Select(contato => $"{contato.Nome},{contato.Telefone},{contato.Email},{contato.Tipo}").ToList();
+            // List<string> linhas = contatos.Select(contato => $"{contato.Nome},{contato.Telefone},{contato.Email},{contato.Tipo}").ToList();
+            string json = JsonConvert.SerializeObject(contatos, Formatting.Indented);
 
+            // Escrevendo o JSON em um arquivo
+            File.WriteAllText("contatos.json", json);
             // Salva as linhas no arquivo de texto
-            File.WriteAllLines("contatos.txt", linhas);
+            //File.WriteAllLines("contatos.txt", linhas);
         }
 
         // Método para carregar contatos do armazenamento permanente
@@ -114,21 +125,11 @@ namespace AgendaTelefonica
             List<Contato> contatosCarregados = new List<Contato>();
 
             // Verifica se o arquivo de contatos existe
-            if (File.Exists("contatos.txt"))
+            if (File.Exists("contatos.json"))
             {
+                string json = File.ReadAllText("contatos.json");
                 // Carrega todas as linhas do arquivo
-                string[] linhas = File.ReadAllLines("contatos.txt");
-
-                // Para cada linha, divide os valores pelo separador ',' e cria um novo contato
-                foreach (string linha in linhas)
-                {
-                    string[] valores = linha.Split(',');
-                    if (valores.Length == 4)
-                    {
-                        Contato contato = new Contato(valores[0], valores[1], valores[2], valores[3]);
-                        contatosCarregados.Add(contato);
-                    }
-                }
+                contatosCarregados = JsonConvert.DeserializeObject<List<Contato>>(json);
             }
 
             return contatosCarregados;
@@ -136,6 +137,8 @@ namespace AgendaTelefonica
 
         private void AdicionarContatoButton_Click_1(object sender, EventArgs e)
         {
+
+
             // Obter dados do formulário
             string nome = NomeTextBox.Text.Trim();
             string telefone = TelefoneTextBox.Text.Trim();
@@ -145,8 +148,25 @@ namespace AgendaTelefonica
             // Verificar se todos os campos foram preenchidos
             if (!string.IsNullOrEmpty(nome) && !string.IsNullOrEmpty(telefone) && !string.IsNullOrEmpty(tipo))
             {
+
+                if (VerificarNomeNaLista(nome) && !isEdit)
+                {
+                    MessageBox.Show("O nome já existe nos contatos");
+                    return;
+                }
+
+                if (isEdit)
+                {
+                    contatos.RemoveAll(contato => contato.Nome == aux.Nome);
+                    isEdit = false;
+                }
+
+
+
                 // Criar um novo objeto Contato
                 Contato novoContato = new Contato(nome, telefone, email, tipo);
+
+
 
                 // Adicionar o novo contato à lista
                 contatos.Add(novoContato);
@@ -164,85 +184,84 @@ namespace AgendaTelefonica
             {
                 MessageBox.Show("Por favor, preencha todos os campos.");
             }
+
         }
 
-     
+        private bool VerificarNomeNaLista(string nome)
+        {
+            if (contatos.Any(contato => contato.Nome == nome))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         private void ExcluirContatoButton_Click_1(object sender, EventArgs e)
         {
-            
-                if (ContatosListBox.SelectedItem != null)
-                {
-                    // Obtém o contato selecionado
-                    Contato contatoSelecionado = (Contato)ContatosListBox.SelectedItem;
 
-                    // Remove o contato da lista
-                    contatos.Remove(contatoSelecionado);
+            if (ContatosListBox.SelectedItem != null)
+            {
+                // Obtém o contato selecionado
+                Contato contatoSelecionado = (Contato)ContatosListBox.SelectedItem;
 
-                    // Atualiza o ListBox
-                    AtualizarListBox();
+                // Remove o contato da lista
+                contatos.Remove(contatoSelecionado);
 
-                    // Salva contatos no armazenamento
-                    SalvarContatosNoArmazenamento();
+                // Atualiza o ListBox
+                AtualizarListBox();
 
-                    // Limpa os campos do formulário
-                    LimparCampos();
-                }
-                else
-                {
-                    MessageBox.Show("Por favor, selecione um contato para excluir.");
-                }
+                // Salva contatos no armazenamento
+                SalvarContatosNoArmazenamento();
+
+                // Limpa os campos do formulário
+                LimparCampos();
             }
-
-        
-
-        private void EditarContatoButton_Click(object sender, EventArgs e)
-        {
-                if (ContatosListBox.SelectedItem != null)
-                {
-                    // Obtém o contato selecionado
-                    Contato contatoSelecionado = (Contato)ContatosListBox.SelectedItem;
-
-                    // Obtém os novos valores dos campos do formulário
-                    string novoNome = NomeTextBox.Text.Trim();
-                    string novoTelefone = TelefoneTextBox.Text.Trim();
-                    string novoEmail = EmailTextBox.Text.Trim();
-                    string novoTipo = TipoContatoComboBox.SelectedItem?.ToString();
-
-                    // Verifica se todos os campos estão preenchidos
-                    if (!string.IsNullOrEmpty(novoNome) && !string.IsNullOrEmpty(novoTelefone) && !string.IsNullOrEmpty(novoTipo))
-                    {
-                        // Atualiza os valores do contato selecionado
-                        contatoSelecionado.Nome = novoNome;
-                        contatoSelecionado.Telefone = novoTelefone;
-                        contatoSelecionado.Email = novoEmail;
-                        contatoSelecionado.Tipo = novoTipo;
-
-                        // Atualiza o ListBox
-                        AtualizarListBox();
-
-                        // Salva contatos no armazenamento
-                        SalvarContatosNoArmazenamento();
-
-                        // Limpa os campos do formulário
-                        LimparCampos();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Por favor, preencha todos os campos.");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Por favor, selecione um contato para editar.");
-                }
+            else
+            {
+                MessageBox.Show("Por favor, selecione um contato para excluir.");
             }
+        }
 
-        
+
+
+
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {
+            LimparCampos();
+            isEdit = false;
+        }
 
+        private void PesquisarButton_Click_1(object sender, EventArgs e)
+        {
+            var contatosEncontrados = contatos.Where(contato => ContemNoInicio(contato.Nome.ToLower(), PesquisarTextBox.Text.Trim().ToLower())).ToList();
+
+            AtualizarListBox(contatosEncontrados);
+        }
+
+        private void LimparBuscaButton_Click(object sender, EventArgs e)
+        {
+            AtualizarListBox();
+            PesquisarTextBox.Text = "";
+
+        }
+
+        static bool ContemNoInicio(string nome, string prefixo)
+        {
+            if (nome.Length < prefixo.Length)
+                return false;
+
+            for (int i = 0; i < prefixo.Length; i++)
+            {
+                if (nome[i] != prefixo[i])
+                    return false;
+            }
+            return true;
         }
     }
 
@@ -259,6 +278,10 @@ namespace AgendaTelefonica
             Telefone = telefone;
             Email = email;
             Tipo = tipo;
+        }
+        public Contato()
+        {
+         
         }
 
         public override string ToString()
