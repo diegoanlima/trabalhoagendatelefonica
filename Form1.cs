@@ -25,26 +25,7 @@ namespace AgendaTelefonica
         }
 
 
-        private void PesquisarButton_Click(object sender, EventArgs e)
-        {
-            string termoPesquisa = PesquisarTextBox.Text.Trim();
-
-            if (!string.IsNullOrEmpty(termoPesquisa))
-            {
-                var contatosFiltrados = contatos.Where(contato =>
-                    contato.Nome.IndexOf(termoPesquisa, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    contato.Telefone.IndexOf(termoPesquisa, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    contato.Email.IndexOf(termoPesquisa, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    contato.Tipo.IndexOf(termoPesquisa, StringComparison.OrdinalIgnoreCase) >= 0
-                ).ToList();
-
-                AtualizarListBox(contatosFiltrados);
-            }
-            else
-            {
-                AtualizarListBox();
-            }
-        }
+     
 
         private void ContatosListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
